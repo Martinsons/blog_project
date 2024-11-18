@@ -39,10 +39,12 @@ export default async function BlogPage() {
                   {post.title}
                 </h2>
               </Link>
-              <div className="text-gray-600 mb-4">
+              <div className="text-sm text-gray-500">
                 {formatDate(post.created_at)}
               </div>
-              <p className="text-gray-700">{post.excerpt || post.title}</p>
+              <p className="text-gray-700">
+                {post.content?.substring(0, 150).trim() + '...' || post.title}
+              </p>
               <Link
                 href={`/blog/${post.slug}`}
                 className="inline-block mt-4 text-blue-600 hover:text-blue-800"
