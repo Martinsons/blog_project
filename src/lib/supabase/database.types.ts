@@ -46,6 +46,27 @@ export interface Database {
           image_url?: string | null
         }
       }
+      comments: {
+        Row: {
+          id: number
+          post_id: number
+          author_name: string
+          content: string
+          created_at: string
+        }
+        Insert: {
+          post_id: number
+          author_name: string
+          content: string
+          created_at?: string
+        }
+        Update: {
+          post_id?: number
+          author_name?: string
+          content?: string
+          created_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
