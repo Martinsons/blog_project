@@ -1,7 +1,11 @@
 import { supabase } from './client'
 import type { Database } from './database.types'
 
-type Post = Database['public']['Tables']['posts']['Row']
+type Post = Database['public']['Tables']['posts']['Row'] & {
+  author: {
+    email: string
+  }
+}
 type NewPost = Database['public']['Tables']['posts']['Insert']
 type UpdatePost = Database['public']['Tables']['posts']['Update']
 
@@ -82,7 +86,7 @@ export async function searchPosts(query: string) {
 export async function getPopularPosts(currentPostId?: number, limit: number = 3) {
   const query = supabase
     .from('posts')
-    .select('id, title, slug, image_url, created_at')
+    .select('id, title, slug, image_url, featured_image_url, created_at')
     .eq('published', true)
     .order('created_at', { ascending: false })
     .limit(limit)

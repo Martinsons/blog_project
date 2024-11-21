@@ -32,34 +32,16 @@ export default async function BlogPost({
             {formatDate(post.created_at)}
           </div>
           
-          {post.image_url && (
+          {post.featured_image_url && (
             <div className="relative w-full h-96 mb-8 rounded-lg overflow-hidden">
               <Image
-                src={post.image_url}
+                src={post.featured_image_url}
                 alt={post.title}
                 fill
                 className="object-cover"
                 priority
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-              {/* Author information */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-4">
-                <div className="flex items-center">
-                  <div className="rounded-full bg-gray-200 w-8 h-8 flex items-center justify-center mr-3">
-                    <span className="text-gray-600 text-sm">
-                      A
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-medium">
-                      {post.author_id || 'Anonymous'}
-                    </p>
-                    <p className="text-sm text-gray-300">
-                      {formatDate(post.created_at)}
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 
@@ -77,7 +59,7 @@ export default async function BlogPost({
 
         {/* Sidebar */}
         <aside className="lg:w-80 flex-shrink-0">
-          <div className="sticky top-8">
+          <div className="sticky top-16">
             <PopularPosts posts={popularPosts} />
           </div>
         </aside>

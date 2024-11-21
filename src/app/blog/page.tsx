@@ -17,10 +17,10 @@ export default async function BlogPage() {
             key={post.id}
             className="bg-white rounded-lg shadow hover:shadow-md transition-shadow overflow-hidden"
           >
-            {post.image_url ? (
+            {post.featured_image_url ? (
               <div className="relative w-full h-48">
                 <Image
-                  src={post.image_url}
+                  src={post.featured_image_url}
                   alt={post.title}
                   fill
                   className="object-cover"

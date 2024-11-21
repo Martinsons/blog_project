@@ -22,6 +22,7 @@ export interface Database {
           tags: string[] | null
           search_vector: unknown | null
           image_url: string | null
+          featured_image_url: string | null
         }
         Insert: {
           title: string
@@ -33,6 +34,7 @@ export interface Database {
           published?: boolean
           tags?: string[] | null
           image_url?: string | null
+          featured_image_url?: string | null
         }
         Update: {
           title?: string
@@ -44,6 +46,7 @@ export interface Database {
           published?: boolean
           tags?: string[] | null
           image_url?: string | null
+          featured_image_url?: string | null
         }
       }
       comments: {

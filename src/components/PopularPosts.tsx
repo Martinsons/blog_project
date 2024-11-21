@@ -7,12 +7,13 @@ type PopularPost = {
   title: string
   slug: string
   image_url?: string
+  featured_image_url?: string
   created_at: string
 }
 
 export default function PopularPosts({ posts }: { posts: PopularPost[] }) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
+    <div className="bg-white rounded-lg shadow-lg p-6">
       <h2 className="text-xl font-bold mb-6">Popular Posts</h2>
       <div className="space-y-6">
         {posts.map((post) => (
@@ -21,10 +22,10 @@ export default function PopularPosts({ posts }: { posts: PopularPost[] }) {
             href={`/blog/${post.slug}`}
             className="flex items-center gap-4 group"
           >
-            {post.image_url ? (
+            {(post.featured_image_url || post.image_url) ? (
               <div className="flex-shrink-0 w-16 h-16 relative rounded-full overflow-hidden">
                 <Image
-                  src={post.image_url}
+                  src={post.featured_image_url || post.image_url || ''}
                   alt={post.title}
                   fill
                   className="object-cover"

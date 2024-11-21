@@ -36,8 +36,19 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {posts?.map((post) => (
               <article key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="flex items-start p-6 gap-6 justify-between">
-                  <div className="flex-grow">
+                {post.featured_image_url && (
+                  <div className="relative w-full h-48">
+                    <Image
+                      src={post.featured_image_url}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                )}
+                <div className="flex items-start p-6">
+                  <div className="w-full">
                     <h2 className="text-2xl font-bold mb-2">
                       <Link href={`/blog/${post.slug}`} className="hover:text-blue-600 transition-colors">
                         {post.title}
@@ -59,25 +70,6 @@ export default async function Home() {
                       </div>
                     )}
                   </div>
-                  {post.image_url ? (
-                    <div className="flex-shrink-0">
-                      <div className="w-24 h-24 rounded-full border-4 border-gray-100 shadow-lg overflow-hidden">
-                        <Image
-                          src={post.image_url}
-                          alt={post.title}
-                          width={96}
-                          height={96}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex-shrink-0">
-                      <div className="w-24 h-24 bg-gray-100 rounded-full border-4 border-gray-200 shadow-lg flex items-center justify-center">
-                        <span className="text-gray-400 text-sm">No image</span>
-                      </div>
-                    </div>
-                  )}
                 </div>
               </article>
             ))}
