@@ -1,271 +1,166 @@
 'use client'
 
-import { useState, useCallback } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Image from '@tiptap/extension-image'
-import Link from '@tiptap/extension-link'
-import Placeholder from '@tiptap/extension-placeholder'
-import CodeBlock from '@tiptap/extension-code-block'
-import { Card, CardContent } from '../components/ui/card'
-import { Button } from '../components/ui/button'
-import { 
-  Bold, Italic, List, Heading1, Heading2, 
-  Image as ImageIcon, Link as LinkIcon, ListOrdered,
-  Undo, Redo, Code, Quote, Strikethrough, X
+import {
+  Bold,
+  Italic,
+  List,
+  ListOrdered,
+  Quote,
+  Heading1,
+  Heading2,
+  Heading3,
+  Undo,
+  Redo,
 } from 'lucide-react'
 
 interface TipTapEditorProps {
   content?: string
-  onChange?: (content: string) => void
-  placeholder?: string
+  onChange: (content: string) => void
 }
 
-const TipTapEditor = ({ content, onChange, placeholder = 'Start writing your blog post here...' }: TipTapEditorProps) => {
-  const [showLinkMenu, setShowLinkMenu] = useState(false)
-  const [linkUrl, setLinkUrl] = useState('')
+const MenuButton = ({ 
+  onClick, 
+  active = false,
+  disabled = false,
+  children,
+  title
+}: { 
+  onClick: () => void
+  active?: boolean
+  disabled?: boolean
+  children: React.ReactNode
+  title: string
+}) => (
+  <button
+    onClick={onClick}
+    disabled={disabled}
+    title={title}
+    className={`
+      p-2 rounded-lg transition-colors
+      ${active 
+        ? 'bg-emerald-100 text-emerald-800' 
+        : 'hover:bg-gray-100 text-gray-700'
+      }
+      ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+    `}
+  >
+    {children}
+  </button>
+)
 
+export default function TipTapEditor({ content = '', onChange }: TipTapEditorProps) {
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3]
-        },
-        codeBlock: false
-      }),
-      Image.configure({
-        inline: true,
-        allowBase64: true
-      }),
-      Link.configure({
-        openOnClick: false,
-        HTMLAttributes: {
-          class: 'text-blue-500 hover:text-blue-700 underline'
-        }
-      }),
-      Placeholder.configure({
-        placeholder,
-      }),
-      CodeBlock.configure({
-        HTMLAttributes: {
-          class: 'bg-gray-100 rounded p-4 font-mono text-sm'
-        }
-      })
+      StarterKit,
     ],
-    content: content || '',
-    editorProps: {
-      attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[200px] px-4',
-      },
-    },
+    content,
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML())
+      onChange(editor.getHTML())
     },
-    immediatelyRender: false
   })
-
-  const addImage = () => {
-    const url = window.prompt('Enter the URL of the image:')
-    if (url) {
-      editor?.chain().focus().setImage({ src: url }).run()
-    }
-  }
-
-  const setLink = useCallback(() => {
-    if (!linkUrl) {
-      editor?.chain().focus().unsetLink().run()
-      setShowLinkMenu(false)
-      return
-    }
-
-    // Update link
-    editor?.chain().focus().setLink({ href: linkUrl }).run()
-    
-    // Reset and close menu
-    setLinkUrl('')
-    setShowLinkMenu(false)
-  }, [editor, linkUrl])
-
-  const showLinkInput = useCallback(() => {
-    const previousUrl = editor?.getAttributes('link').href
-    setLinkUrl(previousUrl || '')
-    setShowLinkMenu(true)
-  }, [editor])
 
   if (!editor) {
     return null
   }
 
   return (
-    <Card className="w-full">
-      <div className="border-b p-2 flex flex-wrap gap-2">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editor.isActive('bold') ? 'bg-gray-200' : ''}
-        >
-          <Bold className="h-4 w-4" />
-        </Button>
-        
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={editor.isActive('italic') ? 'bg-gray-200' : ''}
-        >
-          <Italic className="h-4 w-4" />
-        </Button>
+    <div className="border rounded-lg overflow-hidden">
+      <div className="border-b bg-gray-50 p-2">
+        <div className="flex flex-wrap gap-1">
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            active={editor.isActive('bold')}
+            title="Treknraksts (Ctrl+B)"
+          >
+            <Bold size={18} />
+          </MenuButton>
+          
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            active={editor.isActive('italic')}
+            title="Slīpraksts (Ctrl+I)"
+          >
+            <Italic size={18} />
+          </MenuButton>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={editor.isActive('strike') ? 'bg-gray-200' : ''}
-        >
-          <Strikethrough className="h-4 w-4" />
-        </Button>
+          <div className="w-px h-6 bg-gray-300 mx-1 self-center" />
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+            active={editor.isActive('heading', { level: 1 })}
+            title="Virsraksts 1"
+          >
+            <Heading1 size={18} />
+          </MenuButton>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={editor.isActive('heading', { level: 1 }) ? 'bg-gray-200' : ''}
-        >
-          <Heading1 className="h-4 w-4" />
-        </Button>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+            active={editor.isActive('heading', { level: 2 })}
+            title="Virsraksts 2"
+          >
+            <Heading2 size={18} />
+          </MenuButton>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-          className={editor.isActive('heading', { level: 2 }) ? 'bg-gray-200' : ''}
-        >
-          <Heading2 className="h-4 w-4" />
-        </Button>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+            active={editor.isActive('heading', { level: 3 })}
+            title="Virsraksts 3"
+          >
+            <Heading3 size={18} />
+          </MenuButton>
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+          <div className="w-px h-6 bg-gray-300 mx-1 self-center" />
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive('bulletList') ? 'bg-gray-200' : ''}
-        >
-          <List className="h-4 w-4" />
-        </Button>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            active={editor.isActive('bulletList')}
+            title="Saraksts"
+          >
+            <List size={18} />
+          </MenuButton>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive('orderedList') ? 'bg-gray-200' : ''}
-        >
-          <ListOrdered className="h-4 w-4" />
-        </Button>
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            active={editor.isActive('orderedList')}
+            title="Numurēts saraksts"
+          >
+            <ListOrdered size={18} />
+          </MenuButton>
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
+          <MenuButton
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            active={editor.isActive('blockquote')}
+            title="Citāts"
+          >
+            <Quote size={18} />
+          </MenuButton>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          className={editor.isActive('codeBlock') ? 'bg-gray-200' : ''}
-        >
-          <Code className="h-4 w-4" />
-        </Button>
+          <div className="w-px h-6 bg-gray-300 mx-1 self-center" />
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          className={editor.isActive('blockquote') ? 'bg-gray-200' : ''}
-        >
-          <Quote className="h-4 w-4" />
-        </Button>
+          <MenuButton
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editor.can().undo()}
+            title="Atsaukt (Ctrl+Z)"
+          >
+            <Undo size={18} />
+          </MenuButton>
 
-        <div className="w-px h-4 bg-gray-300 mx-1" />
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={addImage}
-        >
-          <ImageIcon className="h-4 w-4" />
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={showLinkInput}
-          className={editor.isActive('link') ? 'bg-gray-200' : ''}
-        >
-          <LinkIcon className="h-4 w-4" />
-        </Button>
-
-        <div className="w-px h-4 bg-gray-300 mx-1" />
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-        >
-          <Undo className="h-4 w-4" />
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-        >
-          <Redo className="h-4 w-4" />
-        </Button>
+          <MenuButton
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editor.can().redo()}
+            title="Atcelt atsaukšanu (Ctrl+Shift+Z)"
+          >
+            <Redo size={18} />
+          </MenuButton>
+        </div>
       </div>
 
-      {showLinkMenu && (
-        <div className="p-2 border-b flex items-center gap-2">
-          <input
-            type="url"
-            placeholder="Enter URL"
-            value={linkUrl}
-            onChange={(e) => setLinkUrl(e.target.value)}
-            className="flex-grow p-1 border rounded"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault()
-                setLink()
-              }
-              if (e.key === 'Escape') {
-                setShowLinkMenu(false)
-              }
-            }}
-          />
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={setLink}
-          >
-            Add Link
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowLinkMenu(false)}
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-
-      <CardContent className="mt-4">
-        <EditorContent editor={editor} />
-      </CardContent>
-    </Card>
+      <EditorContent 
+        editor={editor} 
+        className="prose max-w-none p-4 min-h-[200px] focus:outline-none"
+      />
+    </div>
   )
 }
-
-export default TipTapEditor

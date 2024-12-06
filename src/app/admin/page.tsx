@@ -8,7 +8,7 @@ import type { Post } from '@/types/blog';
 
 export const dynamic = 'force-dynamic';
 
-export default function AdminPage() {
+function AdminContent() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -47,9 +47,13 @@ export default function AdminPage() {
     return <div>Loading...</div>;
   }
 
+  return <AdminDashboard posts={posts} onPostsChange={fetchPosts} />;
+}
+
+export default function AdminPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <AdminDashboard posts={posts} onPostsChange={fetchPosts} />
+      <AdminContent />
     </Suspense>
   );
 }

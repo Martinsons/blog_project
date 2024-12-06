@@ -12,7 +12,7 @@ interface BlogPost {
   slug: string
   featured_image_url?: string
   created_at: string
-  tags?: string[]
+  category?: string
 }
 
 interface BlogPostCardProps {
@@ -21,13 +21,12 @@ interface BlogPostCardProps {
 }
 
 export default function BlogPostCard({ post, isPreview = false }: BlogPostCardProps) {
-  // Create content preview on render
   const contentPreview = post.content ? createContentPreview(post.content) : post.title
 
   return (
-    <article className="group bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
+    <article className="group bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100">
       {post.featured_image_url ? (
-        <div className="relative w-full h-56 overflow-hidden">
+        <div className="relative w-full aspect-[16/9] overflow-hidden">
           <Image
             src={post.featured_image_url}
             alt={post.title}
@@ -37,46 +36,43 @@ export default function BlogPostCard({ post, isPreview = false }: BlogPostCardPr
           />
         </div>
       ) : (
-        <div className="w-full h-56 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-          <p className="text-gray-400 font-medium">No image available</p>
+        <div className="w-full aspect-[16/9] bg-gradient-to-br from-emerald-50 to-green-50 flex items-center justify-center">
+          <p className="text-gray-400 font-medium">Nav attēla</p>
         </div>
       )}
       
-      <div className="p-8">
-        <Link href={`/blog/${post.slug}`} className="block">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900 hover:text-blue-600 transition-colors mb-3">
+      <div className="p-4 sm:p-6">
+        {post.category && (
+          <span className="inline-block px-2 py-1 text-xs font-semibold text-emerald-800 bg-emerald-100 rounded-full mb-3">
+            {post.category}
+          </span>
+        )}
+        
+        <Link href={`/blog/${post.slug}`} className="block group">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 group-hover:text-emerald-600 transition-colors mb-2">
             {post.title}
           </h2>
         </Link>
-        <div className="text-sm font-medium text-gray-400 mb-4">
+        
+        <div className="text-sm font-medium text-gray-400 mb-3">
           {formatDate(post.created_at)}
         </div>
+        
         {isPreview ? (
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-emerald max-w-none">
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         ) : (
-          <p className="text-gray-600 leading-relaxed">
+          <p className="text-gray-600 leading-relaxed line-clamp-3">
             {contentPreview}
           </p>
         )}
-        {post.tags && post.tags.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-2">
-            {post.tags.map((tag) => (
-              <span 
-                key={tag} 
-                className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-medium"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
+
         <Link
           href={`/blog/${post.slug}`}
-          className="inline-flex items-center mt-6 px-6 py-3 border border-transparent text-sm font-semibold rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200"
+          className="inline-flex items-center mt-4 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
         >
-          Read more
+          Lasīt vairāk
           <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>

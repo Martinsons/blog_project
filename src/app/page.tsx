@@ -23,36 +23,37 @@ export default async function Home() {
 
     return (
       <div className="w-full min-h-screen bg-white">
-        <div className="py-24 px-4 relative overflow-hidden">
+        {/* Hero Section */}
+        <div className="py-12 sm:py-24 px-4 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-emerald-50/50 to-transparent" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(74,222,128,0.08),transparent_50%)]" />
           
           <div className="text-center max-w-4xl mx-auto relative">
             <div className="inline-block">
-              <h1 className="text-[110px] font-bold mb-8 bg-gradient-to-r from-emerald-600 to-emerald-400 text-transparent bg-clip-text relative">
+              <h1 className="text-6xl sm:text-[110px] font-bold mb-4 sm:mb-8 bg-gradient-to-r from-emerald-600 to-emerald-400 text-transparent bg-clip-text relative">
                 Veselība
-                <span className="absolute -right-8 bottom-4 text-emerald-500">.</span>
+                <span className="absolute -right-4 sm:-right-8 bottom-2 sm:bottom-4 text-emerald-500">.</span>
               </h1>
               <div className="absolute -inset-x-20 -inset-y-10 bg-gradient-to-r from-emerald-100/20 to-green-100/20 blur-3xl -z-10" />
             </div>
             
-            <h2 className="text-4xl font-semibold text-gray-900 mb-6 leading-tight">
+            <h2 className="text-2xl sm:text-4xl font-semibold text-gray-900 mb-4 sm:mb-6 leading-tight px-4">
               Jūsu ceļvedis veselīgā dzīvesveidā
             </h2>
-            <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto px-4">
               Uzzini vairāk par veselīgu dzīvesveidu un labsajūtu ar mūsu dabīgajiem produktiem
             </p>
 
-            <div className="flex justify-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12 sm:mb-16 px-4">
               <Link 
                 href="/blog"
-                className="px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors text-center"
               >
                 Skatīt rakstus
               </Link>
               <Link 
                 href="#categories"
-                className="px-6 py-3 bg-white text-emerald-600 rounded-lg border-2 border-emerald-600 hover:bg-emerald-50 transition-colors"
+                className="w-full sm:w-auto px-6 py-3 bg-white text-emerald-600 rounded-lg border-2 border-emerald-600 hover:bg-emerald-50 transition-colors text-center"
               >
                 Mūsu produkti
               </Link>
@@ -60,21 +61,23 @@ export default async function Home() {
           </div>
         </div>
 
-        <main className="max-w-7xl mx-auto px-4 pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <main className="max-w-7xl mx-auto px-4 pb-12 sm:pb-24">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Featured Section */}
             <div className="lg:col-span-2">
               <Link href="#" className="block group">
-                <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-6 shadow-lg">
+                <div className="relative aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden mb-6 shadow-lg">
                   <Image
                     src={posts?.[0]?.featured_image_url || '/placeholder.jpg'}
                     alt="Featured post"
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <h3 className="text-2xl font-semibold mb-2">Jaunākie raksti</h3>
+                  <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
+                    <h3 className="text-xl sm:text-2xl font-semibold mb-2">Jaunākie raksti</h3>
                     <p className="text-white/80">Izpēti mūsu jaunāko saturu</p>
                   </div>
                 </div>
@@ -82,9 +85,9 @@ export default async function Home() {
             </div>
 
             {/* Quick Links */}
-            <div className="space-y-6">
-              <div id="categories" className="block p-8 rounded-2xl bg-gradient-to-br from-emerald-50 to-green-50 shadow-md">
-                <h3 className="text-xl font-semibold mb-4">Mūsu produkti</h3>
+            <div className="space-y-4 sm:space-y-6">
+              <div id="categories" className="block p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-50 to-green-50 shadow-md">
+                <h3 className="text-lg sm:text-xl font-semibold mb-4">Mūsu produkti</h3>
                 <div className="space-y-3">
                   <Link 
                     href="/blog?category=sirupi"
@@ -111,8 +114,8 @@ export default async function Home() {
               </div>
 
               {/* Most Popular Posts */}
-              <div className="block p-8 rounded-2xl bg-gradient-to-br from-emerald-50 to-green-50 shadow-md">
-                <h3 className="text-xl font-semibold mb-4">Populārākie raksti</h3>
+              <div className="block p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-gradient-to-br from-emerald-50 to-green-50 shadow-md">
+                <h3 className="text-lg sm:text-xl font-semibold mb-4">Populārākie raksti</h3>
                 <div className="space-y-4">
                   {posts?.slice(0, 3).map((post) => (
                     <Link 
@@ -133,8 +136,8 @@ export default async function Home() {
             </div>
           </div>
 
-          <h2 className="text-2xl font-semibold mt-16 mb-8">Jaunākie ieraksti</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <h2 className="text-xl sm:text-2xl font-semibold mt-12 sm:mt-16 mb-6 sm:mb-8">Jaunākie ieraksti</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {posts?.slice(1).map((post) => (
               <BlogPostCard key={post.id} post={post} />
             ))}

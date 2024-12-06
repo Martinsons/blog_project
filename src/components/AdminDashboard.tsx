@@ -174,115 +174,160 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
   if (!posts) return null
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <Button
-        onClick={() => setIsEditing(!isEditing)}
-        className="mb-6"
-        variant="default"
-      >
-        {isEditing ? 'Atcelt' : 'Izveidot jaunu rakstu'}
-      </Button>
+    <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Rakstu pārvaldība</h1>
+        <button
+          onClick={() => {
+            setIsEditing(true)
+            setCurrentPost({})
+          }}
+          className="w-full sm:w-auto px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+        >
+          Pievienot jaunu rakstu
+        </button>
+      </div>
 
-      {isEditing && (
-        <form onSubmit={handleCreatePost} className="space-y-6">
-          <input
-            type="text"
-            value={currentPost.title || ''}
-            onChange={e => setCurrentPost({ ...currentPost, title: e.target.value })}
-            placeholder="Raksta virsraksts"
-            className="w-full p-2 border rounded"
-            required
-          />
-          
-          <select
-            value={currentPost.category || 'sirupi'}
-            onChange={(e) => setCurrentPost({ ...currentPost, category: e.target.value })}
-            className="w-full p-2 border rounded bg-white"
-          >
-            {CATEGORIES.map(({ value, label }) => (
-              <option key={value} value={value}>
-                {label}
-              </option>
-            ))}
-          </select>
-
-          <ImageUpload
-            onUploadComplete={handleImageUpload}
-            currentImageUrl={currentPost.featured_image_url}
-          />
-
-          <TipTapEditor 
-            content={currentPost.content}
-            onChange={handleEditorChange}
-          />
-
-          <div className="flex justify-end space-x-4">
-            <Button type="submit">
-              {currentPost.id ? 'Atjaunot rakstu' : 'Izveidot rakstu'}
-            </Button>
+      {isEditing ? (
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div className="mb-4">
+            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+              Virsraksts
+            </label>
+            <input
+              type="text"
+              id="title"
+              value={currentPost.title || ''}
+              onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+            />
           </div>
-        </form>
-      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {posts.map(post => (
-          <Card key={post.id} className="flex flex-col">
-            <CardContent className="p-4 flex-1">
-              {post.featured_image_url && (
-                <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
-                  <NextImage
-                    src={post.featured_image_url}
-                    alt={post.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                <span>{new Date(post.created_at).toLocaleDateString()}</span>
-                <span>•</span>
-                <span className="capitalize">{post.category || 'Sīrupi'}</span>
-              </div>
-              <div className="flex justify-between items-center mt-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleUpdatePost(post)}
-                >
-                  {post.published ? (
-                    <>
-                      <EyeOff className="h-4 w-4 mr-2" />
-                      Atcelt publicēšanu
-                    </>
+          <div className="mb-4">
+            <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-1">
+              Slug
+            </label>
+            <input
+              type="text"
+              id="slug"
+              value={currentPost.slug || ''}
+              onChange={(e) => setCurrentPost({ ...currentPost, slug: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
+              Kategorija
+            </label>
+            <select
+              id="category"
+              value={currentPost.category || ''}
+              onChange={(e) => setCurrentPost({ ...currentPost, category: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500"
+            >
+              <option value="">Izvēlies kategoriju</option>
+              {CATEGORIES.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Saturs
+            </label>
+            <TipTapEditor
+              content={currentPost.content || ''}
+              onChange={(content) => setCurrentPost({ ...currentPost, content })}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-4">
+              Attēls
+            </label>
+            <ImageUpload
+              publicURL={currentPost.featured_image_url}
+              onUploadComplete={(url) => setCurrentPost({ ...currentPost, featured_image_url: url })}
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-end">
+            <button
+              onClick={() => {
+                setIsEditing(false)
+                setCurrentPost({})
+              }}
+              className="w-full sm:w-auto px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Atcelt
+            </button>
+            <button
+              onClick={handleCreatePost}
+              className="w-full sm:w-auto px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
+            >
+              Saglabāt
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <Card key={post.id} className="flex flex-col">
+              <CardContent className="flex-1 p-4">
+                <div className="relative aspect-video w-full mb-4 overflow-hidden rounded-lg">
+                  {post.featured_image_url ? (
+                    <NextImage
+                      src={post.featured_image_url}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                    />
                   ) : (
-                    <>
-                      <Eye className="h-4 w-4 mr-2" />
-                      Publicēt
-                    </>
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                      <span className="text-gray-400">Nav attēla</span>
+                    </div>
                   )}
-                </Button>
-                <div className="space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEditPost(post)}
+                </div>
+                <div className="mb-2">
+                  <span className="inline-block px-2 py-1 text-xs font-semibold text-emerald-800 bg-emerald-100 rounded-full">
+                    {CATEGORIES.find(cat => cat.value === post.category)?.label || 'Nav kategorijas'}
+                  </span>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{post.title}</h3>
+                <div className="flex flex-col sm:flex-row gap-2 mt-4">
+                  <button
+                    onClick={() => handleUpdatePost(post)}
+                    className="flex items-center justify-center gap-2 px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    {post.published ? <EyeOff size={16} /> : <Eye size={16} />}
+                    {post.published ? 'Paslēpt' : 'Publicēt'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setCurrentPost(post)
+                      setIsEditing(true)
+                    }}
+                    className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     Rediģēt
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
+                  </button>
+                  <button
                     onClick={() => handleDeletePost(post.id)}
+                    className="flex items-center justify-center gap-2 px-3 py-1.5 text-sm text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition-colors"
                   >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                    <Trash2 size={16} />
+                    Dzēst
+                  </button>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

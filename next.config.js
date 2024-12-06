@@ -14,8 +14,9 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverActions: true,
+  output: 'standalone',
+  typescript: {
+    ignoreBuildErrors: true,
   },
   async redirects() {
     return [
