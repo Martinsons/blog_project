@@ -6,7 +6,6 @@ import AdminDashboard from '@/components/AdminDashboard';
 import type { Post } from '@/types/blog';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = false;
 
 export default function AdminPage() {
   const [posts, setPosts] = useState<Post[]>([]);
