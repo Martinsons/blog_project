@@ -46,11 +46,10 @@ export default async function BlogPost({
           )}
 
           <div className="prose prose-lg max-w-none">
-            {post.content.split('\n').map((paragraph, index) => (
-              <p key={index} className="mb-4">
-                {paragraph}
-              </p>
-            ))}
+            <div 
+              dangerouslySetInnerHTML={{ __html: post.content }} 
+              className="prose prose-lg max-w-none prose-img:rounded-lg prose-headings:font-bold prose-a:text-blue-600"
+            />
           </div>
 
           {/* Comments section */}
