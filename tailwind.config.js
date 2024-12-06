@@ -8,25 +8,31 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // You can customize these colors
-        primary: '#1a365d',
-        secondary: '#2d3748',
-        accent: '#f56565',
-        // Add more custom colors here
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
       },
       fontFamily: {
-        // Add custom fonts here
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        heading: ['var(--font-playfair)', 'serif'],
-      },
-      spacing: {
-        // Add custom spacing if needed
+        sans: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
-        // Add custom border radius if needed
-      },
-      boxShadow: {
-        // Add custom shadows if needed
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
     },
   },

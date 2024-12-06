@@ -19,6 +19,7 @@ interface Post {
   content: string
   slug: string
   published: boolean
+  category: string
   featured_image?: string
   featured_image_url?: string
   created_at: string
@@ -28,6 +29,12 @@ interface Post {
 interface AdminDashboardProps {
   initialPosts: Post[]
 }
+
+const CATEGORIES = [
+  { value: 'sirupi', label: 'Sīrupi' },
+  { value: 'pulveri', label: 'Pulveri' },
+  { value: 'sulas', label: 'Sulas' }
+] as const
 
 export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
   const [posts, setPosts] = useState<Post[]>(initialPosts)
@@ -71,6 +78,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
           .update({
             title: currentPost.title,
             content: currentPost.content || '',
+            category: currentPost.category,
             slug,
             featured_image: currentPost.featured_image,
             featured_image_url: currentPost.featured_image_url
@@ -88,6 +96,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
           .insert([{
             title: currentPost.title,
             content: currentPost.content || '',
+            category: currentPost.category || 'sirupi', // default category
             slug,
             published: false,
             featured_image: currentPost.featured_image,
@@ -128,7 +137,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
   }
 
   const handleDeletePost = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this post?')) return
+    if (!confirm('Vai tiešām vēlaties dzēst šo rakstu?')) return
 
     try {
       const post = posts.find(p => p.id === id)
@@ -173,7 +182,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
         className="mb-6"
         variant="default"
       >
-        {isEditing ? 'Cancel' : 'Create New Post'}
+        {isEditing ? 'Atcelt' : 'Izveidot jaunu rakstu'}
       </Button>
 
       {isEditing && (
@@ -182,11 +191,23 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
             type="text"
             value={currentPost.title || ''}
             onChange={e => setCurrentPost({ ...currentPost, title: e.target.value })}
-            placeholder="Post title"
+            placeholder="Raksta virsraksts"
             className="w-full p-2 border rounded"
             required
           />
           
+          <select
+            value={currentPost.category || 'sirupi'}
+            onChange={(e) => setCurrentPost({ ...currentPost, category: e.target.value })}
+            className="w-full p-2 border rounded bg-white"
+          >
+            {CATEGORIES.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+
           <ImageUpload
             onUploadComplete={handleImageUpload}
             currentImageUrl={currentPost.featured_image_url}
@@ -199,57 +220,66 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
 
           <div className="flex justify-end space-x-4">
             <Button type="submit">
-              {currentPost.id ? 'Update Post' : 'Create Post'}
+              {currentPost.id ? 'Atjaunot rakstu' : 'Izveidot rakstu'}
             </Button>
           </div>
         </form>
       )}
 
-      <div className="grid gap-6 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {posts.map(post => (
-          <Card key={post.id} className="w-full">
-            <CardContent className="flex items-center justify-between p-6">
-              <div className="flex items-center space-x-4">
-                {post.featured_image_url && (
-                  <div className="relative w-16 h-16">
-                    <NextImage
-                      src={post.featured_image_url}
-                      alt={post.title}
-                      fill
-                      sizes="(max-width: 64px) 100vw, 64px"
-                      className="object-cover rounded"
-                    />
-                  </div>
-                )}
-                <div>
-                  <h3 className="font-semibold">{post.title}</h3>
-                  <p className="text-sm text-gray-500">
-                    Last updated: {new Date(post.updated_at).toLocaleDateString()}
-                  </p>
+          <Card key={post.id} className="flex flex-col">
+            <CardContent className="p-4 flex-1">
+              {post.featured_image_url && (
+                <div className="relative aspect-video mb-4 rounded-lg overflow-hidden">
+                  <NextImage
+                    src={post.featured_image_url}
+                    alt={post.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
+              )}
+              <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
+              <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                <span>{new Date(post.created_at).toLocaleDateString()}</span>
+                <span>•</span>
+                <span className="capitalize">{post.category || 'Sīrupi'}</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex justify-between items-center mt-4">
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   size="sm"
                   onClick={() => handleUpdatePost(post)}
                 >
-                  {post.published ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {post.published ? (
+                    <>
+                      <EyeOff className="h-4 w-4 mr-2" />
+                      Atcelt publicēšanu
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="h-4 w-4 mr-2" />
+                      Publicēt
+                    </>
+                  )}
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleEditPost(post)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => handleDeletePost(post.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div className="space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEditPost(post)}
+                  >
+                    Rediģēt
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDeletePost(post.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>

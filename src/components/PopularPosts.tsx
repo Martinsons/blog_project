@@ -14,7 +14,7 @@ type PopularPost = {
 export default function PopularPosts({ posts }: { posts: PopularPost[] }) {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6">
-      <h2 className="text-xl font-bold mb-6">Popular Posts</h2>
+      <h2 className="text-xl font-bold mb-6">Populārākie raksti</h2>
       <div className="space-y-6">
         {posts.map((post) => (
           <Link
@@ -34,11 +34,11 @@ export default function PopularPosts({ posts }: { posts: PopularPost[] }) {
               </div>
             ) : (
               <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-                <span className="text-gray-400 text-xs">No image</span>
+                <span className="text-gray-400 text-xs">Nav attēla</span>
               </div>
             )}
             <div className="flex-grow min-w-0">
-              <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors truncate">
+              <h3 className="font-medium text-gray-900 group-hover:text-emerald-600 transition-colors truncate">
                 {post.title}
               </h3>
               <time className="text-sm text-gray-500">
