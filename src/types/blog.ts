@@ -4,6 +4,7 @@ export interface Post {
   content: string
   slug: string
   published: boolean
+  category: string
   featured_image?: string
   featured_image_url?: string
   created_at: string
