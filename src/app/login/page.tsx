@@ -4,6 +4,9 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

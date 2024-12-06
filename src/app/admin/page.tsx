@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import AdminDashboard from '@/components/AdminDashboard';
 import type { Post } from '@/types/blog';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function AdminPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
