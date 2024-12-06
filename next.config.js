@@ -14,24 +14,12 @@ const nextConfig = {
       },
     ],
   },
-  output: 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },
-  async redirects() {
-    return [
-      {
-        source: '/admin',
-        destination: '/admin',
-        permanent: true,
-      },
-      {
-        source: '/login',
-        destination: '/login',
-        permanent: true,
-      },
-    ]
-  },
+  experimental: {
+    runtime: 'edge'
+  }
 }
 
 module.exports = nextConfig

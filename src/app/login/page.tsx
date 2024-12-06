@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useState, Suspense } from 'react'
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'edge'
 
 function LoginContent() {
   const [email, setEmail] = useState('')

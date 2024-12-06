@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import type { Post } from '@/types/blog';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 function AdminContent() {
   const [posts, setPosts] = useState<Post[]>([]);
