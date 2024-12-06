@@ -17,6 +17,20 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/admin',
+        destination: '/admin',
+        permanent: true,
+      },
+      {
+        source: '/login',
+        destination: '/login',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

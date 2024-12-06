@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 
 export default function NotFound() {
   return (
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-emerald-50/50 to-transparent">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">404 - Lapa nav atrasta</h2>

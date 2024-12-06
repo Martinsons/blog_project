@@ -27,7 +27,8 @@ interface Post {
 }
 
 interface AdminDashboardProps {
-  initialPosts: Post[]
+  posts: Post[]
+  onPostsChange: () => Promise<void>
 }
 
 const CATEGORIES = [
@@ -36,8 +37,7 @@ const CATEGORIES = [
   { value: 'sulas', label: 'Sulas' }
 ] as const
 
-export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
-  const [posts, setPosts] = useState<Post[]>(initialPosts)
+export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [currentPost, setCurrentPost] = useState<Partial<Post>>({})
   const supabase = createClientComponentClient()
@@ -88,7 +88,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
           .single()
 
         if (error) throw error
-        setPosts(posts.map(p => p.id === currentPost.id ? { ...p, ...post } : p))
+        await onPostsChange()
       } else {
         // Create new post
         const { data: post, error } = await supabase
@@ -106,7 +106,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
           .single()
 
         if (error) throw error
-        setPosts([post, ...posts])
+        await onPostsChange()
       }
 
       setCurrentPost({})
@@ -128,9 +128,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
 
       if (error) throw error
 
-      setPosts(posts.map(p => 
-        p.id === post.id ? { ...p, published: !post.published } : p
-      ))
+      await onPostsChange()
     } catch (error) {
       console.error('Error updating post:', error)
     }
@@ -154,7 +152,7 @@ export default function AdminDashboard({ initialPosts }: AdminDashboardProps) {
 
       if (error) throw error
 
-      setPosts(posts.filter(p => p.id !== id))
+      await onPostsChange()
     } catch (error) {
       console.error('Error deleting post:', error)
     }
