@@ -1,6 +1,13 @@
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Privātuma politika | VeselībaTev',
+  description: 'VeselībaTev privātuma politika - uzziniet, kā mēs aizsargājam jūsu datus un nodrošinām jūsu privātumu.',
+}
+
 export default function PrivacyPolicy() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <article className="prose prose-emerald lg:prose-lg max-w-4xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Privātuma politika</h1>
       
       <section className="mb-8">
@@ -52,6 +59,6 @@ export default function PrivacyPolicy() {
           E-pasts: info@veselibatev.lv
         </p>
       </section>
-    </div>
-  );
+    </article>
+  )
 }
