@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="256" fill="url(#gradient)" />
+  
+  <!-- Stylized V with Leaf -->
+  <path d="M256 120C180 200 140 280 140 320C140 380 190 400 256 400C322 400 372 380 372 320C372 280 332 200 256 120ZM256 160C300 220 332 280 332 320C332 360 300 370 256 370C212 370 180 360 180 320C180 280 212 220 256 160Z" fill="white"/>
+  
+  <!-- Leaf detail -->
+  <path d="M256 180C290 220 310 260 310 290C310 320 288 330 256 330C224 330 202 320 202 290C202 260 222 220 256 180Z" fill="url(#leaf-gradient)"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+    <linearGradient id="leaf-gradient" x1="202" y1="180" x2="310" y2="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.1"/>
+    </linearGradient>
+  </defs>
+</svg>
