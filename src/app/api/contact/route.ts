@@ -3,9 +3,19 @@ import { Resend } from 'resend'
 import { contactFormSchema } from '@/lib/schemas/contact'
 
 // Initialize Resend with error handling
+if (!process.env.RESEND_API_KEY) {
+  console.error('RESEND_API_KEY is not defined in environment variables')
+}
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json(
+      { error: 'Email service not configured' },
+      { status: 503 }
+    )
+  }
+
   try {
     const body = await request.json()
     console.log('Received form data:', body)
