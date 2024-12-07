@@ -38,8 +38,8 @@ export default async function BlogPage({ searchParams }: PageProps) {
 
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <div className="mb-8 animate-fade-up">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-emerald-500">
             {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Articles` :
              search ? `Search Results for "${search}"` : 
              'All Articles'}
@@ -52,8 +52,10 @@ export default async function BlogPage({ searchParams }: PageProps) {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {posts?.map((post) => (
-            <BlogPostCard key={post.id} post={post} />
+          {posts?.map((post, index) => (
+            <div key={post.id} className="animate-fade-up" style={{ animationDelay: `${index * 100}ms` }}>
+              <BlogPostCard post={post} />
+            </div>
           ))}
         </div>
       </div>

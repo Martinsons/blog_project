@@ -2,6 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes flowLine {
+  0% {
+    width: 0%;
+    left: 0;
+  }
+  50% {
+    width: 100%;
+    left: 0;
+  }
+  100% {
+    width: 0%;
+    left: 100%;
+  }
+}
+
+.flow-line::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(to right, #059669, #34d399);
+  animation: flowLine 3s ease-in-out infinite;
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 222.2 84% 4.9%;

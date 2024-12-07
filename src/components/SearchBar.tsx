@@ -13,15 +13,24 @@ export default function SearchBar() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
   const debouncedSearch = useDebounce(searchQuery, 300)
 
+  // Listen for clear search event
   useEffect(() => {
-    if (debouncedSearch) {
-      if (pathname !== '/blog') {
-        router.push(`/blog?search=${encodeURIComponent(debouncedSearch)}`)
-      } else {
-        router.push(`/blog?search=${encodeURIComponent(debouncedSearch)}`)
-      }
+    const handleClearSearch = () => {
+      setSearchQuery('')
     }
-  }, [debouncedSearch, router, pathname])
+
+    window.addEventListener('clearSearch', handleClearSearch)
+    return () => {
+      window.removeEventListener('clearSearch', handleClearSearch)
+    }
+  }, [])
+
+  // Only redirect to /blog when there's an actual search query
+  useEffect(() => {
+    if (debouncedSearch && debouncedSearch.trim() !== '') {
+      router.push(`/blog?search=${encodeURIComponent(debouncedSearch)}`)
+    }
+  }, [debouncedSearch, router])
 
   const clearSearch = () => {
     setSearchQuery('')
@@ -36,11 +45,12 @@ export default function SearchBar() {
         <Search className="h-4 w-4 text-gray-400" />
       </div>
       <Input
-        type="text"
+        type="search"
+        inputMode="search"
         placeholder="Meklēt rakstus..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full pl-10 pr-10 py-2 text-sm border-0 bg-gray-100/80 rounded-full focus:ring-2 focus:ring-emerald-500"
+        className="w-full pl-10 pr-10 py-2 text-base md:text-sm border-0 bg-gray-100/80 rounded-full focus:ring-2 focus:ring-emerald-500"
       />
       {searchQuery && (
         <button

@@ -19,11 +19,14 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
     try {
       setUploading(true)
 
+      // Optimize image before upload
+      const optimizedImage = await optimizeImage(file)
+      
       const fileExt = file.name.split('.').pop()
       const fileName = `${Math.random()}.${fileExt}`
       const { error: uploadError } = await supabase.storage
         .from('images')
-        .upload(fileName, file)
+        .upload(fileName, optimizedImage)
 
       if (uploadError) {
         throw uploadError
@@ -43,12 +46,69 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
     }
   }
 
+  const optimizeImage = async (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const img = document.createElement('img')
+      const url = URL.createObjectURL(file)
+      img.src = url
+      
+      img.onload = () => {
+        URL.revokeObjectURL(url) // Clean up the object URL
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        if (!ctx) {
+          reject(new Error('Failed to get canvas context'))
+          return
+        }
+
+        // Calculate new dimensions while maintaining aspect ratio
+        let { width, height } = img
+        const maxDimension = 1920 // Max dimension for blog images
+        
+        if (width > height && width > maxDimension) {
+          height = (height * maxDimension) / width
+          width = maxDimension
+        } else if (height > maxDimension) {
+          width = (width * maxDimension) / height
+          height = maxDimension
+        }
+
+        canvas.width = width
+        canvas.height = height
+
+        // Use better quality settings
+        ctx.imageSmoothingEnabled = true
+        ctx.imageSmoothingQuality = 'high'
+        
+        // Draw and compress
+        ctx.drawImage(img, 0, 0, width, height)
+        
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob)
+            } else {
+              reject(new Error('Failed to create blob'))
+            }
+          },
+          'image/webp',
+          0.85 // Good balance between quality and size
+        )
+      }
+
+      img.onerror = () => {
+        URL.revokeObjectURL(url) // Clean up the object URL on error
+        reject(new Error('Failed to load image'))
+      }
+    })
+  }
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Attēls nedrīkst būt lielāks par 2MB')
+    if (file.size > 5 * 1024 * 1024) { // Increased to 5MB since we'll optimize it
+      alert('Attēls nedrīkst būt lielāks par 5MB')
       return
     }
 
@@ -85,7 +145,7 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
             <p className="mb-2 text-sm text-gray-500">
               <span className="font-semibold">Klikšķini</span> vai ievelc attēlu šeit
             </p>
-            <p className="text-xs text-gray-500">PNG, JPG līdz 2MB</p>
+            <p className="text-xs text-gray-500">PNG, JPG līdz 5MB</p>
           </div>
           <input
             type="file"

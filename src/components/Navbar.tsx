@@ -4,16 +4,30 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Menu, X } from 'lucide-react'
 import SearchBar from './SearchBar'
+import { useRouter } from 'next/navigation'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const router = useRouter()
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    // First navigate to home
+    router.push('/')
+    // Then dispatch a custom event that SearchBar will listen for
+    window.dispatchEvent(new CustomEvent('clearSearch'))
+  }
 
   return (
     <nav className="sticky top-0 w-full bg-white/80 backdrop-blur-sm border-b border-green-100 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Left: Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link 
+            href="/" 
+            className="flex items-center space-x-2 group"
+            onClick={handleLogoClick}
+          >
             <span className="text-xl sm:text-2xl font-bold">
               <span className="text-emerald-600">Veselība</span>
               <span className="text-emerald-500">Tev</span>

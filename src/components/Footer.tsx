@@ -7,10 +7,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="md:col-span-2">
-            <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-400 text-transparent bg-clip-text">
-              Veselība.
+            <Link 
+              href="/" 
+              className="text-2xl font-bold bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 text-transparent bg-clip-text tracking-tight inline-flex items-center"
+            >
+              VeselībaTev
+              <span className="text-emerald-500 animate-pulse">.</span>
             </Link>
-            <p className="mt-4 text-gray-600 max-w-md">
+            <p className="mt-4 text-gray-600 max-w-md leading-relaxed">
               Jūsu uzticamais ceļvedis veselīgā dzīvesveidā. Mēs piedāvājam kvalitatīvus dabīgos produktus un noderīgu informāciju par veselīgu dzīvesveidu.
             </p>
           </div>
@@ -42,34 +46,23 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 mb-4">Kontakti</h3>
             <ul className="space-y-2">
               <li className="text-gray-600">
-                <span className="font-medium">E-pasts:</span> info@veseliba.lv
+                <span className="font-medium">E-pasts:</span> info@veselibatev.lv
               </li>
               <li className="text-gray-600">
                 <span className="font-medium">Tālrunis:</span> +371 20000000
               </li>
               <li className="text-gray-600">
                 <span className="font-medium">Darba laiks:</span><br />
-                Pirmdiena - Piektdiena<br />
-                9:00 - 18:00
+                P-Pk: 9:00 - 18:00
               </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-100">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-600 text-sm">
-              {new Date().getFullYear()} Veselība. Visas tiesības aizsargātas.
-            </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link href="/privatuma-politika" className="text-gray-600 hover:text-emerald-600 text-sm transition-colors">
-                Privātuma politika
-              </Link>
-              <Link href="/lietosanas-noteikumi" className="text-gray-600 hover:text-emerald-600 text-sm transition-colors">
-                Lietošanas noteikumi
-              </Link>
-            </div>
-          </div>
+          <p className="text-center text-gray-500 text-sm">
+            {new Date().getFullYear()} VeselībaTev. Visas tiesības aizsargātas.
+          </p>
         </div>
       </div>
     </footer>
