@@ -3,7 +3,6 @@ import Image from 'next/image'
 import { createServerSupabaseClient } from '../lib/supabase/server'
 import BlogPostCard from '@/components/BlogPostCard'
 import ContactForm from '@/components/ContactForm'
-import Footer from '@/components/Footer'
 
 export const revalidate = 0 // Revalidate this page on every request
 
@@ -148,9 +147,6 @@ export default async function Home() {
         <div className="bg-gradient-to-b from-white to-emerald-50/30">
           <ContactForm />
         </div>
-
-        {/* Footer */}
-        <Footer />
       </div>
     )
   } catch (error) {
