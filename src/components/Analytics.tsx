@@ -1,8 +1,16 @@
 'use client';
 
-import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
-import CookieConsent from 'react-cookie-consent';
+import dynamic from 'next/dynamic';
 import Script from 'next/script';
+
+const CookieConsent = dynamic(() => import('react-cookie-consent'), {
+  ssr: false
+});
+
+const VercelAnalytics = dynamic(() => 
+  import('@vercel/analytics/react').then((mod) => mod.Analytics), {
+  ssr: false
+});
 
 export default function Analytics() {
   return (
@@ -10,9 +18,9 @@ export default function Analytics() {
       <VercelAnalytics />
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=G-6LCEB85RSK`}
-        strategy="afterInteractive"
+        strategy="lazyOnload"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
+      <Script id="google-analytics" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
