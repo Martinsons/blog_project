@@ -11,7 +11,6 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://veselibatev.lv'),
   title: {
     default: 'VeselībaTev - Jūsu ceļvedis veselīgā dzīvesveidā',
     template: '%s | VeselībaTev'
@@ -20,10 +19,6 @@ export const metadata: Metadata = {
   keywords: ['veselīgs dzīvesveids', 'dabīgie produkti', 'veselība', 'labsajūta', 'sīrupi', 'pulveri', 'sulas', 'latvija'],
   verification: {
     google: 'oXNV5W8X4-hdy7XmInyUeIDg3ywxWRRdWl3RMUh1EDU'
-  },
-  robots: {
-    index: true,
-    follow: true
   }
 }
 
@@ -33,10 +28,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="lv" className={jakarta.variable}>
-      <body className="min-h-screen font-sans antialiased">
+    <html lang="lv">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </head>
+      <body className={`${jakarta.variable} min-h-screen flex flex-col font-sans antialiased`}>
         <Navbar />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-1">{children}</main>
         <Analytics />
         <Footer />
       </body>
