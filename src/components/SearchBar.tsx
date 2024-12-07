@@ -1,19 +1,18 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { Search, X } from 'lucide-react'
 import { Input } from './ui/input'
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
 import { useDebounce } from '@/lib/hooks/useDebounce'
 
-export default function SearchBar() {
+function SearchBarContent() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '')
   const debouncedSearch = useDebounce(searchQuery, 300)
 
-  // Listen for clear search event
   useEffect(() => {
     const handleClearSearch = () => {
       setSearchQuery('')
@@ -25,7 +24,6 @@ export default function SearchBar() {
     }
   }, [])
 
-  // Only redirect to /blog when there's an actual search query
   useEffect(() => {
     if (debouncedSearch && debouncedSearch.trim() !== '') {
       router.push(`/blog?search=${encodeURIComponent(debouncedSearch)}`)
@@ -50,17 +48,38 @@ export default function SearchBar() {
         placeholder="Meklēt rakstus..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="w-full pl-10 pr-10 py-2 text-base md:text-sm border-0 bg-gray-100/80 rounded-full focus:ring-2 focus:ring-emerald-500"
+        className="pl-10 pr-10"
       />
       {searchQuery && (
         <button
           onClick={clearSearch}
-          className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
-          aria-label="Notīrīt meklēšanu"
+          className="absolute inset-y-0 right-3 flex items-center"
+          aria-label="Clear search"
         >
-          <X className="h-4 w-4" />
+          <X className="h-4 w-4 text-gray-400 hover:text-gray-600" />
         </button>
       )}
     </div>
+  )
+}
+
+export default function SearchBar() {
+  return (
+    <Suspense fallback={
+      <div className="relative w-full md:w-64">
+        <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+          <Search className="h-4 w-4 text-gray-400" />
+        </div>
+        <Input
+          type="search"
+          inputMode="search"
+          placeholder="Meklēt rakstus..."
+          className="pl-10"
+          disabled
+        />
+      </div>
+    }>
+      <SearchBarContent />
+    </Suspense>
   )
 }
