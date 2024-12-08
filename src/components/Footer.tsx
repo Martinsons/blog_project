@@ -51,10 +51,6 @@ export default function Footer() {
               <li className="text-gray-600">
                 <span className="font-medium">Tālrunis:</span> +371 20000000
               </li>
-              <li className="text-gray-600">
-                <span className="font-medium">Darba laiks:</span><br />
-                P-Pk: 9:00 - 18:00
-              </li>
             </ul>
           </div>
         </div>

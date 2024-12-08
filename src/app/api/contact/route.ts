@@ -1,15 +1,20 @@
 import { NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import nodemailer from 'nodemailer'
 import { contactFormSchema } from '@/lib/schemas/contact'
 
-// Initialize Resend with error handling
-if (!process.env.RESEND_API_KEY) {
-  console.error('RESEND_API_KEY is not defined in environment variables')
-}
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Configure Nodemailer transporter
+const transporter = nodemailer.createTransport({
+  host: 'smtp.zoho.eu',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'info@veselibatev.lv',
+    pass: process.env.EMAIL_PASSWORD
+  }
+})
 
 export async function POST(request: Request) {
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.EMAIL_PASSWORD) {
     return NextResponse.json(
       { error: 'Email service not configured' },
       { status: 503 }
@@ -20,7 +25,6 @@ export async function POST(request: Request) {
     const body = await request.json()
     console.log('Received form data:', body)
     
-    // Validate the request body
     const result = contactFormSchema.safeParse(body)
     if (!result.success) {
       console.error('Validation error:', result.error.errors)
@@ -31,12 +35,11 @@ export async function POST(request: Request) {
     }
 
     const { name, email, subject, message } = result.data
-    console.log('Validated data:', { name, email, subject, message })
 
     try {
-      const { data, error } = await resend.emails.send({
-        from: 'VeselibaTev <noreply@veselibatev.lv>',
-        to: ['martins.martinsons@yahoo.com'],
+      await transporter.sendMail({
+        from: 'VeselībaTev <info@veselibatev.lv>',
+        to: 'info@veselibatev.lv',
         replyTo: email,
         subject: `[VeselibaTev] ${subject}`,
         html: `
@@ -45,33 +48,21 @@ export async function POST(request: Request) {
           <p><strong>Tēma:</strong> ${subject}</p>
           <p><strong>Ziņojums:</strong></p>
           <p>${message.replace(/\n/g, '<br>')}</p>
-        `,
+        `
       })
 
-      if (error) {
-        console.error('Resend API error:', error)
-        return NextResponse.json(
-          { error: 'Failed to send email', details: error },
-          { status: 500 }
-        )
-      }
-
-      console.log('Email sent successfully:', data)
+      return NextResponse.json({ success: true })
+    } catch (error) {
+      console.error('Error sending email:', error)
       return NextResponse.json(
-        { message: 'Email sent successfully', id: data?.id },
-        { status: 200 }
-      )
-    } catch (emailError) {
-      console.error('Resend error details:', emailError)
-      return NextResponse.json(
-        { error: 'Email service error', details: emailError },
+        { error: 'Failed to send email' },
         { status: 500 }
       )
     }
   } catch (error) {
-    console.error('Server error details:', error)
+    console.error('Error processing request:', error)
     return NextResponse.json(
-      { error: 'Internal server error', details: error },
+      { error: 'Internal server error' },
       { status: 500 }
     )
   }

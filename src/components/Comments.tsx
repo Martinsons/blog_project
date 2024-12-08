@@ -80,13 +80,13 @@ export default function Comments({ postId }: { postId: number }) {
 
   return (
     <div className="mt-12">
-      <h2 className="text-2xl font-bold mb-6">Comments</h2>
+      <h2 className="text-2xl font-bold mb-6">Komentāru sadaļa</h2>
       
       {/* Comment Form */}
       <form onSubmit={handleSubmit} className="mb-8 bg-white p-6 rounded-lg shadow-sm">
         <div className="mb-4">
           <label htmlFor="authorName" className="block text-gray-700 font-medium mb-2">
-            Name
+            Vārds
           </label>
           <input
             type="text"
@@ -101,7 +101,7 @@ export default function Comments({ postId }: { postId: number }) {
         
         <div className="mb-4">
           <label htmlFor="content" className="block text-gray-700 font-medium mb-2">
-            Comment
+            Komentārs
           </label>
           <textarea
             id="content"
@@ -142,7 +142,7 @@ export default function Comments({ postId }: { postId: number }) {
         ))}
         
         {comments.length === 0 && (
-          <p className="text-gray-500 text-center py-4">No comments yet. Be the first to comment!</p>
+          <p className="text-gray-500 text-center py-4">Vēl nav komentāru. Esi pirmais!</p>
         )}
       </div>
     </div>

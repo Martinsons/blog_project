@@ -11,12 +11,42 @@ const jakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: '/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
   title: {
-    default: 'VeselībaTev - Jūsu ceļvedis veselīgā dzīvesveidā',
+    default: 'VeselībaTev - Jūsu ceļvedis imunitātei un slimību ārstēšanai',
     template: '%s | VeselībaTev'
   },
-  description: 'Atklājiet veselīga dzīvesveida noslēpumus ar VeselībaTev. Padomi, raksti un dabīgie produkti labākai dzīves kvalitātei.',
-  keywords: ['veselīgs dzīvesveids', 'dabīgie produkti', 'veselība', 'labsajūta', 'sīrupi', 'pulveri', 'sulas', 'latvija'],
+  description: 'Stipriniet imunitāti, ārstējiet sezonālās un hroniskās saslimšanas un rūpējieties par savu veselību ar mūsu dabīgajiem produktiem. Padomi, raksti un dabīgie produkti labākai dzīves kvalitātei.',
+  keywords: [
+    // Existing keywords
+    'veselīgs dzīvesveids', 'dabīgie produkti', 'veselība', 'labsajūta', 'sīrupi', 'pulveri', 'sulas', 'latvija',
+    
+    // Health conditions & immunity
+    'imunitāte', 'iesnas', 'klepus', 'vitamīni', 'minerālvielas', 'alerģija',
+    
+    // Natural remedies
+    'dabīgie līdzekļi', 'ārstniecības augi', 'tējas', 'medus produkti', 'propoliss',
+    
+    // Seasonal terms
+    'sezonālās slimības', 'saaukstēšanās', 'gripa', 'pavasara vitamīni', 'ziemas imunitāte',
+    
+    // Specific products
+    'ehinācija', 'kumelītes', 'piparmētra', 'kliņģerītes', 'ingvers', 'ķiploki',
+    
+    // Wellness & prevention
+    'profilakse', 'organisma attīrīšana', 'detoks', 'dabīgā ārstēšana', 'imūnsistēma',
+    
+    // Location specific
+    'latvijas produkti', 'rīga', 'talsi', 'talsu rajons', 'dabīgie līdzekļi latvijā', 'veselības veikals'
+  ],
   verification: {
     google: 'oXNV5W8X4-hdy7XmInyUeIDg3ywxWRRdWl3RMUh1EDU'
   }
