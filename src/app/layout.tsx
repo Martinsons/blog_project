@@ -7,6 +7,10 @@ import { Metadata } from 'next'
 
 const jakarta = Plus_Jakarta_Sans({ 
   subsets: ['latin', 'latin-ext'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'sans-serif'],
+  adjustFontFallback: true,
   variable: '--font-jakarta'
 })
 
@@ -39,7 +43,7 @@ export const metadata: Metadata = {
     'sezonālās slimības', 'saaukstēšanās', 'gripa', 'pavasara vitamīni', 'ziemas imunitāte',
     
     // Specific products
-    'ehinācija', 'kumelītes', 'piparmētra', 'kliņģerītes', 'ingvers', 'ķiploki',
+    'ehin��cija', 'kumelītes', 'piparmētra', 'kliņģerītes', 'ingvers', 'ķiploki',
     
     // Wellness & prevention
     'profilakse', 'organisma attīrīšana', 'detoks', 'dabīgā ārstēšana', 'imūnsistēma',
@@ -58,13 +62,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="lv">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </head>
-      <body className={`${jakarta.variable} min-h-screen flex flex-col font-sans antialiased`}>
+    <html lang="lv" className={jakarta.variable}>
+      <body className="min-h-screen flex flex-col font-sans antialiased">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Analytics />
