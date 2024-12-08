@@ -24,23 +24,31 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
       
       const fileExt = file.name.split('.').pop()
       const fileName = `${Math.random()}.${fileExt}`
-      const { error: uploadError } = await supabase.storage
-        .from('images')
-        .upload(fileName, optimizedImage)
+      const { error: uploadError, data } = await supabase.storage
+        .from('blog-assets')
+        .upload(fileName, optimizedImage, {
+          cacheControl: '3600',
+          upsert: false
+        })
 
       if (uploadError) {
+        console.error('Upload error:', uploadError)
         throw uploadError
       }
 
+      if (!data) {
+        throw new Error('No data returned from upload')
+      }
+
       const { data: { publicUrl } } = supabase.storage
-        .from('images')
+        .from('blog-assets')
         .getPublicUrl(fileName)
 
       setPreview(publicUrl)
       onUploadComplete(publicUrl)
     } catch (error) {
       console.error('Error uploading image:', error)
-      alert('Error uploading image!')
+      alert('Failed to upload image. Please try again.')
     } finally {
       setUploading(false)
     }
