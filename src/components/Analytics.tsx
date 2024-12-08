@@ -2,20 +2,19 @@
 
 import dynamic from 'next/dynamic';
 import Script from 'next/script';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/react'
 
 const CookieConsent = dynamic(() => import('react-cookie-consent'), {
-  ssr: false
-});
-
-const VercelAnalytics = dynamic(() => 
-  import('@vercel/analytics/react').then((mod) => mod.Analytics), {
   ssr: false
 });
 
 export default function Analytics() {
   return (
     <>
-      <VercelAnalytics />
+      <VercelAnalytics 
+        mode={'production'} 
+        debug={false}
+      />
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=G-6LCEB85RSK`}
         strategy="lazyOnload"
