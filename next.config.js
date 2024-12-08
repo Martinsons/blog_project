@@ -23,6 +23,9 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react'],
+    fontLoaders: [
+      { loader: '@next/font/google', options: { subsets: ['latin', 'latin-ext'] } },
+    ],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
@@ -71,6 +74,19 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, must-revalidate',
           },
+        ],
+      },
+      {
+        source: '/_next/static/media/*.woff2',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Content-Type',
+            value: 'font/woff2',
+          }
         ],
       },
       {
