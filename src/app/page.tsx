@@ -28,22 +28,22 @@ export default async function Home() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(74,222,128,0.08),transparent_50%)]" />
           
           <div className="text-center max-w-4xl mx-auto relative">
-          <div className="relative inline-block">
-            {/* Background blur effect */}
-            <div className="absolute -inset-x-20 -inset-y-10 bg-gradient-to-r from-emerald-100/30 to-green-100/30 blur-3xl -z-10" />
+            <div className="relative inline-block">
+              {/* Background blur effect */}
+              <div className="absolute -inset-x-20 -inset-y-10 bg-gradient-to-r from-emerald-100/30 to-green-100/30 blur-3xl -z-10" />
+              
+              <h1 className="relative text-4xl sm:text-6xl md:text-[110px] font-bold mb-4 sm:mb-8 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 text-transparent bg-clip-text tracking-wider flow-line">
+                <span className="absolute -left-4 sm:-left-6 md:-left-12 -top-2 sm:-top-4 md:-top-6 text-emerald-500 text-4xl sm:text-6xl md:text-8xl font-serif animate-pulse">"</span>
+                VESELĪGUMS
+                <span className="absolute -right-4 sm:-right-6 md:-right-12 -top-2 sm:-top-4 md:-top-6 text-emerald-500 text-4xl sm:text-6xl md:text-8xl font-serif animate-pulse">"</span>
+              </h1>
+            </div>
             
-            <h1 className="relative text-6xl sm:text-[110px] font-bold mb-4 sm:mb-8 bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-400 text-transparent bg-clip-text tracking-wider flow-line">
-              <span className="absolute -left-6 sm:-left-12 -top-4 sm:-top-6 text-emerald-500 text-6xl sm:text-8xl font-serif animate-pulse">"</span>
-              VESELĪGUMS
-              <span className="absolute -right-6 sm:-right-12 -top-4 sm:-top-6 text-emerald-500 text-6xl sm:text-8xl font-serif animate-pulse">"</span>
-            </h1>
-          </div>
-            
-            <h2 className="text-2xl sm:text-4xl font-semibold text-gray-800 mb-4 sm:mb-6 leading-tight px-4 tracking-wide">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-semibold text-gray-800 mb-4 sm:mb-6 leading-tight px-4 tracking-wide">
               Jūsu ceļvedis imunitātei un slimību ārstēšanai
             </h2>
-            <p className="text-lg sm:text-xl text-gray-700 mb-8 sm:mb-12 max-w-2xl mx-auto px-4 leading-relaxed tracking-normal">
-            Stipriniet imunitāti, ārstējiet sezonālās un hroniskās saslimšanas un rūpējieties par savu veselību ar mūsu dabīgajiem produktiem.
+            <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 sm:mb-8 md:mb-12 max-w-2xl mx-auto px-4 leading-relaxed tracking-normal">
+              Stipriniet imunitāti, ārstējiet sezonālās un hroniskās saslimšanas un rūpējieties par savu veselību ar mūsu dabīgajiem produktiem.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12 sm:mb-16 px-4">
@@ -54,10 +54,10 @@ export default async function Home() {
                 Skatīt rakstus
               </Link>
               <Link 
-                href="#categories"
+                href="/jaunakie-raksti"
                 className="w-full sm:w-auto px-6 py-3 bg-white text-emerald-600 rounded-lg border-2 border-emerald-600 hover:bg-emerald-50 transition-colors text-center"
               >
-                Mūsu produkti
+                Jaunākie raksti
               </Link>
             </div>
           </div>
@@ -67,7 +67,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Featured Section */}
             <div className="lg:col-span-2">
-              <Link href="#" className="block group">
+              <Link href="/jaunakie-raksti" className="block group">
                 <div className="relative aspect-[16/9] rounded-xl sm:rounded-2xl overflow-hidden mb-6 shadow-lg">
                   <Image
                     src={posts?.[0]?.featured_image_url || '/placeholder.jpg'}
@@ -138,8 +138,8 @@ export default async function Home() {
             </div>
           </div>
 
-          <h2 className="text-xl sm:text-2xl font-semibold mt-12 sm:mt-16 mb-6 sm:mb-8">Jaunākie ieraksti</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <h2 id="latest-posts" className="text-xl sm:text-2xl font-semibold mt-12 sm:mt-16 mb-6 sm:mb-8">Jaunākie ieraksti</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {posts?.slice(1).map((post) => (
               <BlogPostCard key={post.id} post={post} />
             ))}

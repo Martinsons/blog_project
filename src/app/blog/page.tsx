@@ -40,9 +40,9 @@ export default async function BlogPage({ searchParams }: PageProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8 animate-fade-up">
           <h1 className="text-3xl font-bold text-gray-900 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-emerald-500">
-            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Articles` :
-             search ? `Search Results for "${search}"` : 
-             'All Articles'}
+            {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} raksti` :
+             search ? `Meklēšanas rezultāti "${search}"` : 
+             'Visi raksti'}
           </h1>
           {((search || category) && (!posts || posts.length === 0)) && (
             <p className="text-gray-600">
