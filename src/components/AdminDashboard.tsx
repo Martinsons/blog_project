@@ -302,6 +302,7 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
                       alt={post.title}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-100 flex items-center justify-center">

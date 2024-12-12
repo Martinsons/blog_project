@@ -22,8 +22,12 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
       // Optimize image before upload
       const optimizedImage = await optimizeImage(file)
       
+      // Generate a more unique filename with timestamp and original name
+      const timestamp = Date.now()
+      const sanitizedName = file.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
+      const fileName = `${timestamp}-${sanitizedName}.${fileExt}`
+      
       const { error: uploadError, data } = await supabase.storage
         .from('blog-assets')
         .upload(fileName, optimizedImage, {
@@ -44,8 +48,11 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
         .from('blog-assets')
         .getPublicUrl(data.path)
 
-      setPreview(publicUrl)
-      onUploadComplete(data.path, publicUrl)
+      // Ensure the URL is using HTTPS
+      const secureUrl = publicUrl.replace('http://', 'https://')
+      
+      setPreview(secureUrl)
+      onUploadComplete(data.path, secureUrl)
     } catch (error) {
       console.error('Error uploading image:', error)
       alert('Failed to upload image. Please try again.')
@@ -137,6 +144,7 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
             alt="Preview"
             fill
             className="object-cover"
+            unoptimized
           />
           <button
             onClick={removeImage}
