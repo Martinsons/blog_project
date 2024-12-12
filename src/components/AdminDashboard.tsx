@@ -64,6 +64,26 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
     }
   }
 
+  const handleImageUpload = (imagePath: string, imageUrl: string) => {
+    setCurrentPost(prev => ({
+      ...prev,
+      featured_image: imagePath,
+      featured_image_url: imageUrl
+    }))
+  }
+
+  const removeOldImage = async (imagePath: string) => {
+    try {
+      const { error } = await supabase.storage
+        .from('blog-assets')
+        .remove([imagePath])
+      
+      if (error) throw error
+    } catch (error) {
+      console.error('Error removing old image:', error)
+    }
+  }
+
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -72,26 +92,33 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
       const slug = currentPost.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       
       if (currentPost.id) {
+        // Find the existing post to check if we need to remove old image
+        const existingPost = posts.find(p => p.id === currentPost.id)
+        if (existingPost?.featured_image && 
+            existingPost.featured_image !== currentPost.featured_image && 
+            currentPost.featured_image_url) {
+          // Remove old image if it exists and is different from the new one
+          await removeOldImage(existingPost.featured_image)
+        }
+
         // Update existing post
-        const { data: post, error } = await supabase
+        const { error } = await supabase
           .from('posts')
           .update({
             title: currentPost.title,
             content: currentPost.content || '',
             category: currentPost.category,
             slug,
-            featured_image: currentPost.featured_image,
-            featured_image_url: currentPost.featured_image_url
+            featured_image: currentPost.featured_image || null,
+            featured_image_url: currentPost.featured_image_url || null
           })
           .eq('id', currentPost.id)
-          .select()
-          .single()
 
         if (error) throw error
         await onPostsChange()
       } else {
         // Create new post
-        const { data: post, error } = await supabase
+        const { error } = await supabase
           .from('posts')
           .insert([{
             title: currentPost.title,
@@ -99,11 +126,9 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
             category: currentPost.category || 'sirupi', // default category
             slug,
             published: false,
-            featured_image: currentPost.featured_image,
-            featured_image_url: currentPost.featured_image_url
+            featured_image: currentPost.featured_image || null,
+            featured_image_url: currentPost.featured_image_url || null
           }])
-          .select()
-          .single()
 
         if (error) throw error
         await onPostsChange()
@@ -156,14 +181,6 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
     } catch (error) {
       console.error('Error deleting post:', error)
     }
-  }
-
-  const handleImageUpload = (imagePath: string, imageUrl: string) => {
-    setCurrentPost({
-      ...currentPost,
-      featured_image: imagePath,
-      featured_image_url: imageUrl
-    })
   }
 
   const handleEditPost = (post: Post) => {
