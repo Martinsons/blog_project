@@ -84,7 +84,11 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
             featured_image_url: currentPost.featured_image_url
           })
           .eq('id', currentPost.id)
-          .select()
+          .select('*')
+          .headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          })
           .single()
 
         if (error) throw error
@@ -102,7 +106,11 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
             featured_image: currentPost.featured_image,
             featured_image_url: currentPost.featured_image_url
           }])
-          .select()
+          .select('*')
+          .headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          })
           .single()
 
         if (error) throw error
