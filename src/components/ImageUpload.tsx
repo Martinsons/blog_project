@@ -7,7 +7,7 @@ import { Upload, X } from 'lucide-react'
 
 interface ImageUploadProps {
   publicURL?: string | null
-  onUploadComplete: (url: string) => void
+  onUploadComplete: (imagePath: string, imageUrl: string) => void
 }
 
 export default function ImageUpload({ publicURL, onUploadComplete }: ImageUploadProps) {
@@ -42,10 +42,10 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
 
       const { data: { publicUrl } } = supabase.storage
         .from('blog-assets')
-        .getPublicUrl(fileName)
+        .getPublicUrl(data.path)
 
       setPreview(publicUrl)
-      onUploadComplete(publicUrl)
+      onUploadComplete(data.path, publicUrl)
     } catch (error) {
       console.error('Error uploading image:', error)
       alert('Failed to upload image. Please try again.')
@@ -125,7 +125,7 @@ export default function ImageUpload({ publicURL, onUploadComplete }: ImageUpload
 
   const removeImage = () => {
     setPreview(null)
-    onUploadComplete('')
+    onUploadComplete('', '')
   }
 
   return (

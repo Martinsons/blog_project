@@ -268,7 +268,7 @@ export default function AdminDashboard({ posts, onPostsChange }: AdminDashboardP
             </label>
             <ImageUpload
               publicURL={currentPost.featured_image_url}
-              onUploadComplete={(url) => setCurrentPost({ ...currentPost, featured_image_url: url })}
+              onUploadComplete={handleImageUpload}
             />
           </div>
 
