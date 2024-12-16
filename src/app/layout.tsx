@@ -48,10 +48,7 @@ export const metadata: Metadata = {
     'latvijas produkti', 'rīga', 'talsi', 'talsu rajons', 'dabīgie līdzekļi latvijā', 'veselības veikals'
   ],
   alternates: {
-    canonical: 'https://veselibatev.lv',
-    languages: {
-      'lv-LV': 'https://veselibatev.lv'
-    }
+    canonical: 'https://veselibatev.lv'
   },
   robots: {
     index: true,
@@ -63,6 +60,7 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+    nocache: true,
   },
   icons: {
     icon: [
@@ -72,9 +70,21 @@ export const metadata: Metadata = {
     apple: [
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
+    other: [
+      {
+        rel: 'mask-icon',
+        url: '/safari-pinned-tab.svg',
+        color: '#5bbad5'
+      }
+    ]
   },
+  manifest: '/site.webmanifest',
   verification: {
-    google: 'oXNV5W8X4-hdy7XmInyUeIDg3ywxWRRdWl3RMUh1EDU'
+    google: 'oXNV5W8X4-hdy7XmInyUeIDg3ywxWRRdWl3RMUh1EDU',
+    yandex: 'yandex-verification-code',
+    other: {
+      'facebook-domain-verification': ['facebook-domain-verification-code']
+    }
   },
   openGraph: {
     type: 'website',
@@ -82,12 +92,34 @@ export const metadata: Metadata = {
     url: 'https://veselibatev.lv',
     title: 'VeselībaTev - Veselība tev | Jūsu ceļvedis imunitātei',
     description: 'Stipriniet imunitāti, ārstējiet sezonālās un hroniskās saslimšanas un rūpējieties par savu veselību ar mūsu dabīgajiem produktiem.',
-    siteName: 'VeselībaTev'
+    siteName: 'VeselībaTev',
+    images: [
+      {
+        url: 'https://veselibatev.lv/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'VeselībaTev - Jūsu ceļvedis veselībai'
+      }
+    ]
   },
   twitter: {
     card: 'summary_large_image',
+    site: '@veselibatev',
+    creator: '@veselibatev',
     title: 'VeselībaTev - Veselība tev | Jūsu ceļvedis imunitātei',
     description: 'Stipriniet imunitāti, ārstējiet sezonālās un hroniskās saslimšanas un rūpējieties par savu veselību ar mūsu dabīgajiem produktiem.',
+    images: ['https://veselibatev.lv/twitter-image.jpg']
+  },
+  category: 'health',
+  classification: 'health and wellness',
+  referrer: 'origin-when-cross-origin',
+  creator: 'VeselībaTev',
+  publisher: 'VeselībaTev',
+  formatDetection: {
+    telephone: true,
+    date: true,
+    address: true,
+    email: true
   }
 }
 
@@ -99,8 +131,16 @@ export default function RootLayout({
   return (
     <html lang="lv" className={jakarta.variable}>
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="alternate" href="https://veselibatev.lv" hrefLang="lv-LV" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <link rel="alternate" href="https://veselibatev.lv" hrefLang="lv" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
       </head>
       <body className="min-h-screen flex flex-col font-sans antialiased">
         <JsonLd />

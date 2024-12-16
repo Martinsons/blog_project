@@ -1,0 +1,46 @@
+{
+  "name": "VeselībaTev",
+  "short_name": "VeselībaTev",
+  "description": "Jūsu ceļvedis imunitātei un slimību ārstēšanai",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Blogs",
+      "short_name": "Blogs",
+      "description": "Lasīt jaunākos rakstus",
+      "url": "/blog",
+      "icons": [{ "src": "/blog-icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "lang": "lv",
+  "dir": "ltr",
+  "categories": ["veselība", "dzīvesveids", "medicīna"],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Sākumlapa"
+    }
+  ],
+  "prefer_related_applications": false
+} 
