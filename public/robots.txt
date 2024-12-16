@@ -1,0 +1,15 @@
+# https://veselibatev.lv robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://veselibatev.lv/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /login
+
+# Crawl delay
+Crawl-delay: 10 

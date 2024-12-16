@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://veselibatev.lv</loc>
+    <lastmod>2024-01-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="lv-LV" href="https://veselibatev.lv"/>
+  </url>
+  <url>
+    <loc>https://veselibatev.lv/blog</loc>
+    <lastmod>2024-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="lv-LV" href="https://veselibatev.lv/blog"/>
+  </url>
+  <url>
+    <loc>https://veselibatev.lv/privatuma-politika</loc>
+    <lastmod>2024-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="lv-LV" href="https://veselibatev.lv/privatuma-politika"/>
+  </url>
+</urlset> 
